@@ -1,13 +1,12 @@
-digitalocean-tekkit-manager
+digitalocean-minecraftserver-manager
 ===========================
 
-Manage Tekkit Server droplets on DigitalOcean.
+This is a fork of the work done by srccd: https://github.com/srccd/digitalocean-tekkit-manager
 
-This is v1.0.
+I had the same issue: kids + minecraft + servers + digitalocean = potentially expensive in time and money
 
-A complete description can be found here:  
-http://hi.srccd.com/post/hosting-minecraft-on-digitalocean
+This script works to rebalance that equation by letting the kids manage the server droplet on Digital Ocean themselves, in a safe way, and only run it when they are going to use it, in a money-saving way.
 
-I wanted a way to automate the creation, destruction, and recreation of a Tekkit Server (Minecraft) on a DigitalOcean Droplet. And I wanted to make it easy enough for my kids to use.
+My fork adds the server/snapshot names and does some minor page formatting.
 
-Work in progress!
+Might swap out the text+links to a more simpler workflow style view.
