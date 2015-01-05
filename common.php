@@ -30,41 +30,12 @@ function getImages() {
 	return $getImages;
 }
 
-function getDropletsOnlineCount($data) {
-	global $thedropletname;
-	$srvcnt = 0;
-	foreach($data->droplets as $mydata) {
-		$servername=$mydata->name;
-		$serverstatus=$mydata->status;
-		if ($servername==$thedropletname && $serverstatus=="active") {
-			$srvcnt++;
-		}
-	}
-	return $srvcnt;
-}
-
-function getDropletsOfflineCount($data) {
-	global $thedropletname;
-	$srvoffcnt = 0;
-	foreach($data->droplets as $mydata) {
-		$servername=$mydata->name;
-		$serverstatus=$mydata->status;
-		if ($servername==$thedropletname && $serverstatus=="off") {
-			$srvoffcnt++;
-		}
-	}
-	return $srvoffcnt;
-}
-
 function getDropletsOnlineArr($data) {
 	global $thedropletname;
 	$mcarr = array();
 	foreach($data->droplets as $mydata) {
-		$serverid=$mydata->id;
-		$servername=$mydata->name;
-		$serverstatus=$mydata->status;
-		if ($servername==$thedropletname && $serverstatus=="active") {
-			$mcarr[] = $serverid;
+		if ($mydata->name == $thedropletname && $mydata->status == "active") {
+			$mcarr[] = $mydata;
 		}
 	}
 	return $mcarr;
@@ -74,11 +45,8 @@ function getDropletsOfflineArr($data) {
 	global $thedropletname;
 	$mcoffarr = array();
 	foreach($data->droplets as $mydata) {
-		$serverid=$mydata->id;
-		$servername=$mydata->name;
-		$serverstatus=$mydata->status;
-		if ($servername==$thedropletname && $serverstatus=="off") {
-			$mcoffarr[] = $serverid;
+		if ($mydata->name == $thedropletname && $mydata->status == "off") {
+			$mcoffarr[] = $mydata;
 		}
 	}
 	return $mcoffarr;
@@ -95,26 +63,12 @@ function printDroplets($data) {
 	}
 }
 
-function getImagesCount($data) {
-	global $thedropletname;
-	$imgcnt = 0;
-	foreach($data->images as $mydata) {
-		$imgname=$mydata->name;
-		if ($imgname==$thedropletname."-snap") {
-			$imgcnt++;
-		}
-	}
-	return $imgcnt;
-}
-
 function getImagesArr($data) {
 	global $thedropletname;
 	$mcimgarr = array();
 	foreach($data->images as $mydata) {
-		$imgid=$mydata->id;
-		$imgname=$mydata->name;
-		if ($imgname==$thedropletname."-snap") {
-			$mcimgarr[] = $imgid;
+		if ($mydata->name == $thedropletname."-snap") {
+			$mcimgarr[] = $mydata;
 		}
 	}
 	return $mcimgarr;
@@ -122,14 +76,14 @@ function getImagesArr($data) {
 
 function stepGo($sarr, $stype, $saction, $totalimages=0) {
 	global $myClientID, $myDOApi, $thedropletname;
-	if ($stype=="droplets"&&$saction=="snapshot"&&$totalimages>0) {
+	if ($stype == "droplets" && $saction == "snapshot" && $totalimages>0) {
 		echo "already have a snapshot; have to delete it first";
 		return;
 	}
 	$mccnt = 0;
-	foreach ($sarr as &$mcvalue) {
+	foreach ($sarr as $mydata) {
 		$mccnt++;
-		echo "<a target=\"_blank\" href=\"bounce.php?go=".$saction."&type=".$stype."&iid=".$mcvalue."\" onclick=\"return confirm('Really ".$saction."?');\">" . $stype.$mccnt . "</a> | ";
+		echo "<a target=\"_blank\" href=\"bounce.php?go=".$saction."&type=".$stype."&iid=".$mydata->id."\" onclick=\"return confirm('Really ".$saction."?');\">".$mydata->name." ".$mccnt."</a> | ";
 	}
 }
 
@@ -140,9 +94,9 @@ function stepNew($sarr, $stype, $saction, $totalservers=0) {
 		return;
 	}
 	$mccnt = 0;
-	foreach ($sarr as &$mcvalue) {
+	foreach ($sarr as $mydata) {
 		$mccnt++;
-		echo "<a target=\"_blank\" href=\"bounce.php?go=new&type=".$stype."&iid=".$mcvalue."\" onclick=\"return confirm('Really ".$saction."?');\">" . $stype.$mccnt . "</a> | ";
+		echo "<a target=\"_blank\" href=\"bounce.php?go=new&type=".$stype."&iid=".$mydata->id."\" onclick=\"return confirm('Really ".$saction."?');\">".$mydata->name." ".$mccnt."</a> | ";
 	}
 }
 
@@ -167,4 +121,9 @@ function getEventMore($eid) {
 	unset($json);
 	return $getEventMore;
 }
+
+function cmp($a, $b) {
+    return strcmp($a->id, $b->id);
+}
+
 ?>

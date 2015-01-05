@@ -25,15 +25,17 @@ if ($whatlevel!="A") header( 'Location: index.php?logout=yes' );
 
 	<?php
 	$data_droplets = getDroplets();
-	$srvcnt = getDropletsOnlineCount($data_droplets);
 	$mcarr = getDropletsOnlineArr($data_droplets);
-	$srvoffcnt = getDropletsOfflineCount($data_droplets);
+	$srvcnt = count($mcarr);
 	$mcoffarr = getDropletsOfflineArr($data_droplets);
+	$srvoffcnt = count($mcoffarr);
 	$totalsrvcnt = $srvcnt + $srvoffcnt;
-	$data_images = getImages();
-	$imgcnt = getImagesCount($data_images);
+	$data_images = getImages();	
 	$mcimgarr = getImagesArr($data_images);
-	sort($mcarr); sort($mcoffarr); sort($mcimgarr);
+	$imgcnt = count($mcimgarr);
+	usort($mcarr, "cmp");
+	usort($mcoffarr, "cmp");
+	usort($mcimgarr, "cmp");
 
 	echo "<p>List of MC servers:<br />";
 	printDroplets($data_droplets);
